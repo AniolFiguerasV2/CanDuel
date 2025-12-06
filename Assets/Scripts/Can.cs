@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Can : MonoBehaviour
@@ -9,6 +7,7 @@ public class Can : MonoBehaviour
 
     private Rigidbody rb;
     private Lifes lifes;
+    private Points points;
 
     private void Awake()
     {
@@ -16,6 +15,7 @@ public class Can : MonoBehaviour
         rb.useGravity = false;
 
         lifes = FindAnyObjectByType<Lifes>();
+        points = FindAnyObjectByType<Points>();
     }
 
     private void FixedUpdate()
@@ -25,7 +25,13 @@ public class Can : MonoBehaviour
 
     public void OnHit(Vector3 hitPoint)
     {
-        Vector3 dir = (hitPoint - transform.position).normalized;
+
+        if (points != null)
+        {
+            points.AddPoints();
+        }
+        else { Debug.Log("ERROR"); }
+            Vector3 dir = (hitPoint - transform.position).normalized;
 
         if (dir.y > 0)
         {

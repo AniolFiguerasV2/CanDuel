@@ -118,6 +118,24 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""infinitammo"",
+                    ""type"": ""Button"",
+                    ""id"": ""71ecaaf8-3c98-4981-9d90-237ffb46358d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""chargeHabilites"",
+                    ""type"": ""Button"",
+                    ""id"": ""fe4fccb1-b409-4c87-a98c-b64499a3653b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -153,6 +171,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""recharge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""60d6ee05-15d5-4c1f-b558-0c859f7fc0f7"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""infinitammo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""725ca58f-0ee2-45fb-aa09-8545a5a3817b"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""chargeHabilites"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -164,6 +204,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Player_shoot = m_Player.FindAction("shoot", throwIfNotFound: true);
         m_Player_Point = m_Player.FindAction("Point", throwIfNotFound: true);
         m_Player_recharge = m_Player.FindAction("recharge", throwIfNotFound: true);
+        m_Player_infinitammo = m_Player.FindAction("infinitammo", throwIfNotFound: true);
+        m_Player_chargeHabilites = m_Player.FindAction("chargeHabilites", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -247,6 +289,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_shoot;
     private readonly InputAction m_Player_Point;
     private readonly InputAction m_Player_recharge;
+    private readonly InputAction m_Player_infinitammo;
+    private readonly InputAction m_Player_chargeHabilites;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -270,6 +314,14 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/recharge".
         /// </summary>
         public InputAction @recharge => m_Wrapper.m_Player_recharge;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/infinitammo".
+        /// </summary>
+        public InputAction @infinitammo => m_Wrapper.m_Player_infinitammo;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/chargeHabilites".
+        /// </summary>
+        public InputAction @chargeHabilites => m_Wrapper.m_Player_chargeHabilites;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -305,6 +357,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @recharge.started += instance.OnRecharge;
             @recharge.performed += instance.OnRecharge;
             @recharge.canceled += instance.OnRecharge;
+            @infinitammo.started += instance.OnInfinitammo;
+            @infinitammo.performed += instance.OnInfinitammo;
+            @infinitammo.canceled += instance.OnInfinitammo;
+            @chargeHabilites.started += instance.OnChargeHabilites;
+            @chargeHabilites.performed += instance.OnChargeHabilites;
+            @chargeHabilites.canceled += instance.OnChargeHabilites;
         }
 
         /// <summary>
@@ -325,6 +383,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @recharge.started -= instance.OnRecharge;
             @recharge.performed -= instance.OnRecharge;
             @recharge.canceled -= instance.OnRecharge;
+            @infinitammo.started -= instance.OnInfinitammo;
+            @infinitammo.performed -= instance.OnInfinitammo;
+            @infinitammo.canceled -= instance.OnInfinitammo;
+            @chargeHabilites.started -= instance.OnChargeHabilites;
+            @chargeHabilites.performed -= instance.OnChargeHabilites;
+            @chargeHabilites.canceled -= instance.OnChargeHabilites;
         }
 
         /// <summary>
@@ -386,5 +450,19 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRecharge(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "infinitammo" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInfinitammo(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "chargeHabilites" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnChargeHabilites(InputAction.CallbackContext context);
     }
 }
