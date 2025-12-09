@@ -772,7 +772,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -692, y: -394}
+  m_AnchoredPosition: {x: -514, y: -265.4}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &297958700
@@ -1651,8 +1651,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastRange: 200
   maxBullets: 6
-  playerPointsScript: {fileID: 0}
+  playerPointsScript: {fileID: 2076626763}
   infiniteAmmoDuration: 15
+  infiniteAmmoPoints: 100
 --- !u!1 &789392840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2151,7 +2152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 54504386569529468, guid: d1d8476b90274424b9420ef3c0257d94, type: 3}
       propertyPath: m_AngularDrag
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 54504386569529468, guid: d1d8476b90274424b9420ef3c0257d94, type: 3}
       propertyPath: m_Constraints
@@ -2602,7 +2603,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 698.2, y: -44.4}
+  m_AnchoredPosition: {x: 508.9, y: -44.4}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1511247075
