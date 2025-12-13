@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CAN
   - Floor
+  - Border
   layers:
   - Default
   - TransparentFX

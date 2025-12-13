@@ -1,13 +1,18 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Can : MonoBehaviour
 {
     public float force = 10f;
     public float gravity = 7f;
 
+    public float bounceMultiplier = 0.9f;
+
     private Rigidbody rb;
     private Lifes lifes;
     private Points points;
+
+    private Vector3 startPosition;
 
     private void Awake()
     {
@@ -16,6 +21,8 @@ public class Can : MonoBehaviour
 
         lifes = FindAnyObjectByType<Lifes>();
         points = FindAnyObjectByType<Points>();
+
+        startPosition = transform.position;
     }
 
     private void FixedUpdate()
@@ -30,8 +37,8 @@ public class Can : MonoBehaviour
         {
             points.AddPoints();
         }
-        else { Debug.Log("ERROR"); }
-            Vector3 dir = (hitPoint - transform.position).normalized;
+
+        Vector3 dir = (hitPoint - transform.position).normalized;
 
         if (dir.y > 0)
         {
@@ -65,6 +72,34 @@ public class Can : MonoBehaviour
             {
                 lifes.LoseLife(1);
             }
+            ResetCan();
         }
+
+        if (collision.gameObject.CompareTag("Border"))
+        {
+            Bounce(collision);
+        }
+    }
+
+    private void ResetCan()
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        transform.position = startPosition;
+        transform.rotation = Quaternion.identity;
+    }
+
+    private void Bounce(Collision collision)
+    {
+        if (collision.contactCount == 0) { return; }
+
+        Vector3 normal = collision.contacts[0].normal;
+
+        Vector3 incomingVelocity = rb.linearVelocity;
+
+        Vector3 reflectedVelocity = Vector3.Reflect(incomingVelocity, normal);
+
+        rb.linearVelocity = reflectedVelocity * bounceMultiplier;
     }
 }
