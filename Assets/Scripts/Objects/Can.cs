@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
 public class Can : MonoBehaviour
@@ -13,6 +14,7 @@ public class Can : MonoBehaviour
     private Rigidbody rb;
     private Lifes lifes;
     private Points points;
+    private PlayerInputs inputAction;
 
     private Vector3 startPosition;
 
@@ -25,8 +27,14 @@ public class Can : MonoBehaviour
         points = FindAnyObjectByType<Points>();
 
         startPosition = transform.position;
-    }
 
+        inputAction = new PlayerInputs();
+        inputAction.Enable();
+    }
+    private void Start()
+    {
+        inputAction.Player.chargePoints.performed += AddingPoints;
+    }
     private void FixedUpdate()
     {
         rb.AddForce(Physics.gravity * gravity, ForceMode.Acceleration);
@@ -109,5 +117,10 @@ public class Can : MonoBehaviour
         Vector3 reflectedVelocity = Vector3.Reflect(incomingVelocity, normal);
 
         rb.linearVelocity = reflectedVelocity * bounceMultiplier;
+    }
+
+    public void AddingPoints(InputAction.CallbackContext obj)
+    {
+        points.points += 98;
     }
 }

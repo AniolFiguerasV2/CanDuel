@@ -129,40 +129,13 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""chargeHabilites"",
+                    ""name"": ""chargePoints"",
                     ""type"": ""Button"",
                     ""id"": ""fe4fccb1-b409-4c87-a98c-b64499a3653b"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MouseX"",
-                    ""type"": ""Value"",
-                    ""id"": ""9f2188e0-d44b-41b9-a263-d82e331ebfad"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""MouseY"",
-                    ""type"": ""Value"",
-                    ""id"": ""b5d9b387-036f-4233-bf9b-8158580987bc"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""MouseZ"",
-                    ""type"": ""Value"",
-                    ""id"": ""c0327562-bb0e-489f-806f-de5fc51d0588"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -217,51 +190,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""chargeHabilites"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1db6841d-6d12-42b4-8684-eb70ea5e7b8b"",
-                    ""path"": ""<Mouse>/delta/x"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseX"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""85937d92-157f-40eb-b1a2-f0fb97024318"",
-                    ""path"": ""<Mouse>/delta/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseY"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9a259cef-d4d8-498e-9044-213421f2db95"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseZ"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e2ab98ec-224e-4ea5-9fd1-ac3b4f9a1dff"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseZ"",
+                    ""action"": ""chargePoints"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -276,10 +205,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Player_Point = m_Player.FindAction("Point", throwIfNotFound: true);
         m_Player_recharge = m_Player.FindAction("recharge", throwIfNotFound: true);
         m_Player_infinitammo = m_Player.FindAction("infinitammo", throwIfNotFound: true);
-        m_Player_chargeHabilites = m_Player.FindAction("chargeHabilites", throwIfNotFound: true);
-        m_Player_MouseX = m_Player.FindAction("MouseX", throwIfNotFound: true);
-        m_Player_MouseY = m_Player.FindAction("MouseY", throwIfNotFound: true);
-        m_Player_MouseZ = m_Player.FindAction("MouseZ", throwIfNotFound: true);
+        m_Player_chargePoints = m_Player.FindAction("chargePoints", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -364,10 +290,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Point;
     private readonly InputAction m_Player_recharge;
     private readonly InputAction m_Player_infinitammo;
-    private readonly InputAction m_Player_chargeHabilites;
-    private readonly InputAction m_Player_MouseX;
-    private readonly InputAction m_Player_MouseY;
-    private readonly InputAction m_Player_MouseZ;
+    private readonly InputAction m_Player_chargePoints;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -396,21 +319,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @infinitammo => m_Wrapper.m_Player_infinitammo;
         /// <summary>
-        /// Provides access to the underlying input action "Player/chargeHabilites".
+        /// Provides access to the underlying input action "Player/chargePoints".
         /// </summary>
-        public InputAction @chargeHabilites => m_Wrapper.m_Player_chargeHabilites;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/MouseX".
-        /// </summary>
-        public InputAction @MouseX => m_Wrapper.m_Player_MouseX;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/MouseY".
-        /// </summary>
-        public InputAction @MouseY => m_Wrapper.m_Player_MouseY;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/MouseZ".
-        /// </summary>
-        public InputAction @MouseZ => m_Wrapper.m_Player_MouseZ;
+        public InputAction @chargePoints => m_Wrapper.m_Player_chargePoints;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -449,18 +360,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @infinitammo.started += instance.OnInfinitammo;
             @infinitammo.performed += instance.OnInfinitammo;
             @infinitammo.canceled += instance.OnInfinitammo;
-            @chargeHabilites.started += instance.OnChargeHabilites;
-            @chargeHabilites.performed += instance.OnChargeHabilites;
-            @chargeHabilites.canceled += instance.OnChargeHabilites;
-            @MouseX.started += instance.OnMouseX;
-            @MouseX.performed += instance.OnMouseX;
-            @MouseX.canceled += instance.OnMouseX;
-            @MouseY.started += instance.OnMouseY;
-            @MouseY.performed += instance.OnMouseY;
-            @MouseY.canceled += instance.OnMouseY;
-            @MouseZ.started += instance.OnMouseZ;
-            @MouseZ.performed += instance.OnMouseZ;
-            @MouseZ.canceled += instance.OnMouseZ;
+            @chargePoints.started += instance.OnChargePoints;
+            @chargePoints.performed += instance.OnChargePoints;
+            @chargePoints.canceled += instance.OnChargePoints;
         }
 
         /// <summary>
@@ -484,18 +386,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @infinitammo.started -= instance.OnInfinitammo;
             @infinitammo.performed -= instance.OnInfinitammo;
             @infinitammo.canceled -= instance.OnInfinitammo;
-            @chargeHabilites.started -= instance.OnChargeHabilites;
-            @chargeHabilites.performed -= instance.OnChargeHabilites;
-            @chargeHabilites.canceled -= instance.OnChargeHabilites;
-            @MouseX.started -= instance.OnMouseX;
-            @MouseX.performed -= instance.OnMouseX;
-            @MouseX.canceled -= instance.OnMouseX;
-            @MouseY.started -= instance.OnMouseY;
-            @MouseY.performed -= instance.OnMouseY;
-            @MouseY.canceled -= instance.OnMouseY;
-            @MouseZ.started -= instance.OnMouseZ;
-            @MouseZ.performed -= instance.OnMouseZ;
-            @MouseZ.canceled -= instance.OnMouseZ;
+            @chargePoints.started -= instance.OnChargePoints;
+            @chargePoints.performed -= instance.OnChargePoints;
+            @chargePoints.canceled -= instance.OnChargePoints;
         }
 
         /// <summary>
@@ -565,32 +458,11 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInfinitammo(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "chargeHabilites" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "chargePoints" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnChargeHabilites(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "MouseX" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMouseX(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "MouseY" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMouseY(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "MouseZ" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMouseZ(InputAction.CallbackContext context);
+        void OnChargePoints(InputAction.CallbackContext context);
     }
 }
