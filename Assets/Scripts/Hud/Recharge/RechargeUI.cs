@@ -7,7 +7,7 @@ public class RechargeUI : MonoBehaviour
     public RectTransform arrow;
     public Image bar;
 
-    public float maxArrowX = 300f;
+    public float maxArrowX = 150f;
 
     void Start()
     {

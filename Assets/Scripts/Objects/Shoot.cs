@@ -10,6 +10,8 @@ public class Shoot : MonoBehaviour
     public int maxBullets = 6;
     public int currentBullets;
 
+    private bool ammoChanged = false;
+
     private void Awake()
     {
         inputAction = new PlayerInputs();
@@ -21,13 +23,21 @@ public class Shoot : MonoBehaviour
     private void Start()
     {
         inputAction.Player.shoot.performed += Shooting;
-        HUDController.instance.UpdateAmmo(currentBullets);
+    }
+
+    private void Update()
+    {
+        if (ammoChanged)
+        {
+            ammoChanged = false;
+            if (HUDController.instance != null)
+                HUDController.instance.UpdateAmmo(currentBullets);
+        }
     }
 
     private void Shooting(InputAction.CallbackContext obj)
     {
-        if (currentBullets <= 0)
-            return;
+        if (currentBullets <= 0) { return; }
 
         currentBullets--;
         HUDController.instance.UpdateAmmo(currentBullets);
@@ -44,8 +54,18 @@ public class Shoot : MonoBehaviour
                 if (canscript != null)
                     canscript.OnHit(hitInfo.point);
             }
+            if (hitInfo.collider != null)
+            {
+                if (hitInfo.collider.CompareTag("EAGLE"))
+                {
+                    Eagle eagleScript = hitInfo.collider.GetComponent<Eagle>();
+                    if (eagleScript != null)
+                        eagleScript.OnHit(hitInfo.point);
+                }
+            }
         }
     }
+
     public void AddBullets(int amount)
     {
         currentBullets = Mathf.Clamp(currentBullets + amount, 0, maxBullets);

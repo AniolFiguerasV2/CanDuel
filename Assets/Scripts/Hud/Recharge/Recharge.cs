@@ -45,7 +45,7 @@ public class Recharge : MonoBehaviour
             cooldownTimer -= Time.deltaTime;
             if (cooldownTimer <= 0f)
             {
-                cooldownTimer = 0;
+                cooldownTimer = 0f;
                 isOnCooldown = false;
             }
         }
@@ -54,25 +54,39 @@ public class Recharge : MonoBehaviour
     private void OnRechargePress(InputAction.CallbackContext ctx)
     {
         if (isOnCooldown) return;
-        if (shootScript.IsFull()) return;
 
         if (!isCharging)
+        {
+            if (shootScript.IsFull()) return;
             StartRecharge();
+        }
         else
+        {
             StopRecharge();
+        }
     }
 
-    void StartRecharge()
+    private void StartRecharge()
     {
-        currentPattern = patterns[Random.Range(0, patterns.Length)];
-        rechargeUI.SetBarSprite(currentPattern.barSprite);
+        if (patterns == null || patterns.Length == 0)
+        {
+            Debug.LogWarning("No hay patrones de recarga configurados.");
+            return;
+        }
 
+        currentPattern = patterns[Random.Range(0, patterns.Length)];
+
+        barPosition = 0f;
         isCharging = true;
+
+        rechargeUI.SetBarSprite(currentPattern.barSprite);
         rechargeUI.Show(true);
     }
 
-    void StopRecharge()
+    private void StopRecharge()
     {
+        if (!isCharging) return;
+
         isCharging = false;
         rechargeUI.Show(false);
 
@@ -83,8 +97,10 @@ public class Recharge : MonoBehaviour
         cooldownTimer = cooldown;
     }
 
-    int CalculateBullets(float pos)
+    private int CalculateBullets(float pos)
     {
+        if (currentPattern == null) return 1;
+
         float d = Mathf.Abs(pos);
 
         if (pos >= currentPattern.greenMin && pos <= currentPattern.greenMax)

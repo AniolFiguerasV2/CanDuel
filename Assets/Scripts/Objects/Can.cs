@@ -121,6 +121,9 @@ public class Can : MonoBehaviour
 
     public void AddingPoints(InputAction.CallbackContext obj)
     {
-        points.points += 98;
+        if (isOriginal)
+        {
+            points.points += 98;
+        }
     }
 }
