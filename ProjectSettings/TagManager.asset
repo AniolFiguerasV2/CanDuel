@@ -8,6 +8,7 @@ TagManager:
   - Floor
   - Border
   - EAGLE
+  - PHANTOMCAN
   layers:
   - Default
   - TransparentFX

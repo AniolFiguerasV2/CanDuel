@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public GameObject creditosCanvas;
     public void PlayGame()
     {
         SceneManager.LoadScene("GameScene");
@@ -20,5 +21,9 @@ public class MainMenu : MonoBehaviour
     public void PointsMenu()
     {
         SceneManager.LoadScene("ScoreBoardScene");
+    }
+    public void ToggleCanvas()
+    {
+        creditosCanvas.SetActive(!creditosCanvas.activeSelf);
     }
 }

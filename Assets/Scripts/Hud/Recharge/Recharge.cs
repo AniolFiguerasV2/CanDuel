@@ -68,12 +68,6 @@ public class Recharge : MonoBehaviour
 
     private void StartRecharge()
     {
-        if (patterns == null || patterns.Length == 0)
-        {
-            Debug.LogWarning("No hay patrones de recarga configurados.");
-            return;
-        }
-
         currentPattern = patterns[Random.Range(0, patterns.Length)];
 
         barPosition = 0f;

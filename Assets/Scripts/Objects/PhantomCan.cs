@@ -1,0 +1,119 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PhantomCan : MonoBehaviour
+{
+    public float force = 10f;
+    public float gravity = 7f;
+    public float bounceMultiplier = 0.9f;
+
+    public float spinForce = 30f;
+
+    public bool isOriginal;
+
+    private Rigidbody rb;
+    private Points points;
+    private PlayerInputs inputAction;
+
+    private Vector3 startPosition;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+
+        points = FindAnyObjectByType<Points>();
+
+        startPosition = transform.position;
+
+        inputAction = new PlayerInputs();
+        inputAction.Enable();
+    }
+
+    private void Start()
+    {
+        inputAction.Player.chargePoints.performed += AddingPoints;
+    }
+
+    private void FixedUpdate()
+    {
+        rb.AddForce(Physics.gravity * gravity, ForceMode.Acceleration);
+    }
+
+    public void OnHit(Vector3 hitPoint)
+    {
+        if (points != null)
+        {
+            points.AddPoints();
+        }
+
+        Vector3 dir = (hitPoint - transform.position).normalized;
+
+        if (dir.y > 0)
+        {
+            dir.y = 0;
+            dir.Normalize();
+        }
+
+        Vector3 impulse;
+
+        if (Mathf.Abs(dir.x) > 0.1f || Mathf.Abs(dir.z) > 0.1f)
+        {
+            Vector3 lateral = new Vector3(dir.x, 0, dir.z).normalized;
+            Vector3 lateralImpulse = -lateral * (force * 0.25f);
+            Vector3 upwardImpulse = Vector3.up * (force * 0.5f);
+
+            impulse = lateralImpulse + upwardImpulse;
+        }
+        else
+        {
+            impulse = Vector3.up * force;
+        }
+
+        rb.AddForce(impulse, ForceMode.Impulse);
+
+        Vector3 torqueDirection = Vector3.Cross(Vector3.up, dir).normalized;
+        rb.AddTorque(torqueDirection * spinForce, ForceMode.Impulse);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("Border"))
+        {
+            Bounce(collision);
+        }
+    }
+
+    private void ResetCan()
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        transform.position = startPosition;
+        transform.rotation = Quaternion.identity;
+    }
+
+    private void Bounce(Collision collision)
+    {
+        if (collision.contactCount == 0) return;
+
+        Vector3 normal = collision.contacts[0].normal;
+        Vector3 incomingVelocity = rb.linearVelocity;
+        Vector3 reflectedVelocity = Vector3.Reflect(incomingVelocity, normal);
+
+        rb.linearVelocity = reflectedVelocity * bounceMultiplier;
+    }
+
+    public void AddingPoints(InputAction.CallbackContext obj)
+    {
+        if (isOriginal && points != null)
+        {
+            points.points += 98;
+        }
+    }
+}

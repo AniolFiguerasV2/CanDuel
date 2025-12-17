@@ -9,6 +9,8 @@ public class Can : MonoBehaviour
 
     public float bounceMultiplier = 0.9f;
 
+    public float spinForce = 30f;
+
     public bool isOriginal;
 
     private Rigidbody rb;
@@ -31,10 +33,12 @@ public class Can : MonoBehaviour
         inputAction = new PlayerInputs();
         inputAction.Enable();
     }
+
     private void Start()
     {
         inputAction.Player.chargePoints.performed += AddingPoints;
     }
+
     private void FixedUpdate()
     {
         rb.AddForce(Physics.gravity * gravity, ForceMode.Acceleration);
@@ -42,7 +46,6 @@ public class Can : MonoBehaviour
 
     public void OnHit(Vector3 hitPoint)
     {
-
         if (points != null)
         {
             points.AddPoints();
@@ -72,11 +75,13 @@ public class Can : MonoBehaviour
         }
 
         rb.AddForce(impulse, ForceMode.Impulse);
+
+        Vector3 torqueDirection = Vector3.Cross(Vector3.up, dir).normalized;
+        rb.AddTorque(torqueDirection * spinForce, ForceMode.Impulse);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-
         if (collision.gameObject.CompareTag("Floor"))
         {
             if (lifes != null)
@@ -111,9 +116,7 @@ public class Can : MonoBehaviour
         if (collision.contactCount == 0) { return; }
 
         Vector3 normal = collision.contacts[0].normal;
-
         Vector3 incomingVelocity = rb.linearVelocity;
-
         Vector3 reflectedVelocity = Vector3.Reflect(incomingVelocity, normal);
 
         rb.linearVelocity = reflectedVelocity * bounceMultiplier;

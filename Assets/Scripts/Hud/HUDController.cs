@@ -21,7 +21,7 @@ public class HUDController : MonoBehaviour
 
     public void UpdateAmmo(int value)
     {
-        ammoText.text = value + " / \u221E";
+        ammoText.text = value + " ";
     }
     public void UpdateHits(int value)
     {

@@ -16,8 +16,10 @@ public class EagleLifeBoost : MonoBehaviour
         {
             used = true;
 
-            lifes.LoseLife(lifes.lifes);
-
+            if (lifes.lifes < 3)
+            {
+                lifes.AddLife(1);
+            }
             Destroy(gameObject);
         }
     }

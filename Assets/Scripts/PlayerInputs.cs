@@ -136,6 +136,24 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""90276c78-f772-4fe8-9ebd-f1c3ccd01385"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""escMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a04c5d9-d3b9-469d-9aff-139549eb19b8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -193,6 +211,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""chargePoints"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3be935c0-d529-475b-82be-2b473e3c3bdc"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4029a353-6770-4fef-9095-b132577b5700"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""escMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -206,6 +246,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Player_recharge = m_Player.FindAction("recharge", throwIfNotFound: true);
         m_Player_infinitammo = m_Player.FindAction("infinitammo", throwIfNotFound: true);
         m_Player_chargePoints = m_Player.FindAction("chargePoints", throwIfNotFound: true);
+        m_Player_OpenMenu = m_Player.FindAction("OpenMenu", throwIfNotFound: true);
+        m_Player_escMenu = m_Player.FindAction("escMenu", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -291,6 +333,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_recharge;
     private readonly InputAction m_Player_infinitammo;
     private readonly InputAction m_Player_chargePoints;
+    private readonly InputAction m_Player_OpenMenu;
+    private readonly InputAction m_Player_escMenu;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -322,6 +366,14 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/chargePoints".
         /// </summary>
         public InputAction @chargePoints => m_Wrapper.m_Player_chargePoints;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/OpenMenu".
+        /// </summary>
+        public InputAction @OpenMenu => m_Wrapper.m_Player_OpenMenu;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/escMenu".
+        /// </summary>
+        public InputAction @escMenu => m_Wrapper.m_Player_escMenu;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -363,6 +415,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @chargePoints.started += instance.OnChargePoints;
             @chargePoints.performed += instance.OnChargePoints;
             @chargePoints.canceled += instance.OnChargePoints;
+            @OpenMenu.started += instance.OnOpenMenu;
+            @OpenMenu.performed += instance.OnOpenMenu;
+            @OpenMenu.canceled += instance.OnOpenMenu;
+            @escMenu.started += instance.OnEscMenu;
+            @escMenu.performed += instance.OnEscMenu;
+            @escMenu.canceled += instance.OnEscMenu;
         }
 
         /// <summary>
@@ -389,6 +447,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @chargePoints.started -= instance.OnChargePoints;
             @chargePoints.performed -= instance.OnChargePoints;
             @chargePoints.canceled -= instance.OnChargePoints;
+            @OpenMenu.started -= instance.OnOpenMenu;
+            @OpenMenu.performed -= instance.OnOpenMenu;
+            @OpenMenu.canceled -= instance.OnOpenMenu;
+            @escMenu.started -= instance.OnEscMenu;
+            @escMenu.performed -= instance.OnEscMenu;
+            @escMenu.canceled -= instance.OnEscMenu;
         }
 
         /// <summary>
@@ -464,5 +528,19 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnChargePoints(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenMenu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenMenu(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "escMenu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEscMenu(InputAction.CallbackContext context);
     }
 }

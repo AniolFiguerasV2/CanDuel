@@ -5,62 +5,91 @@ public class Shoot : MonoBehaviour
 {
     private PlayerInputs inputAction;
 
-    [Header("Shoot Settings")]
     public float raycastRange = 400f;
     public int maxBullets = 6;
     public int currentBullets;
 
-    private bool ammoChanged = false;
+    public Transform muzzlePoint;
+    public ParticleSystem muzzleFlash;
+    public ParticleSystem hitEffectCan;
+    public ParticleSystem hitEffectEagle;
 
-    [Header("Shoot Effects")]
-    public Transform muzzlePoint;      // Punto de salida de la bala / partícula
-    public ParticleSystem muzzleFlash; // Partícula en el arma
-    public ParticleSystem hitEffect;   // Partícula en el impacto
-    public AudioSource shootSound;     // Sonido de disparo
+    public AudioSource shootAudioSource;
+    public AudioClip shootSound;
+
+    public float recoilUp = 2.5f;
+    public float recoilBack = 0.05f;
+    public float recoilReturnSpeed = 20f;
+
+    public GameObject bulletTracerPrefab;
+    public float tracerDuration = 0.1f;
+
+    private Vector3 originalLocalPosition;
+    private Quaternion originalLocalRotation;
 
     private void Awake()
     {
         inputAction = new PlayerInputs();
-        inputAction.Enable();
 
         currentBullets = maxBullets;
+
+        originalLocalPosition = transform.localPosition;
+        originalLocalRotation = transform.localRotation;
     }
 
     private void Start()
     {
+        inputAction.Enable();
         inputAction.Player.shoot.performed += Shooting;
+    }
+
+    private void OnDisable()
+    {
+        inputAction.Player.shoot.performed -= Shooting;
+        inputAction.Disable();
     }
 
     private void Update()
     {
-        if (ammoChanged)
-        {
-            ammoChanged = false;
-            if (HUDController.instance != null)
-                HUDController.instance.UpdateAmmo(currentBullets);
-        }
+        transform.localPosition = Vector3.Lerp(
+            transform.localPosition,
+            originalLocalPosition,
+            Time.deltaTime * recoilReturnSpeed
+        );
+
+        transform.localRotation = Quaternion.Slerp(
+            transform.localRotation,
+            originalLocalRotation,
+            Time.deltaTime * recoilReturnSpeed
+        );
     }
 
     private void Shooting(InputAction.CallbackContext obj)
     {
-        if (currentBullets <= 0) return;
+        if (!this || currentBullets <= 0) return;
 
-        // Reducir balas y actualizar HUD
         currentBullets--;
+
         if (HUDController.instance != null)
             HUDController.instance.UpdateAmmo(currentBullets);
 
-        // Reproducir sonido de disparo
-        if (shootSound != null)
-            shootSound.Play();
+        if (shootAudioSource != null && shootSound != null)
+        {
+            shootAudioSource.PlayOneShot(shootSound);
+        }
 
-        // Reproducir partícula de disparo en el cañón
         if (muzzleFlash != null && muzzlePoint != null)
         {
-            ParticleSystem flash = Instantiate(muzzleFlash, muzzlePoint.position, muzzlePoint.rotation);
+            ParticleSystem flash = Instantiate(
+                muzzleFlash,
+                muzzlePoint.position,
+                muzzlePoint.rotation
+            );
             flash.Play();
             Destroy(flash.gameObject, 1f);
         }
+
+        ApplyRecoil();
 
         Camera camera = Camera.main;
         Vector2 mousePos = Mouse.current.position.ReadValue();
@@ -68,28 +97,76 @@ public class Shoot : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, raycastRange))
         {
-            // Partícula de impacto
-            if (hitEffect != null)
+            if (bulletTracerPrefab != null)
             {
-                ParticleSystem impact = Instantiate(hitEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-                impact.Play();
-                Destroy(impact.gameObject, 2f);
+                GameObject tracer = Instantiate(bulletTracerPrefab, muzzlePoint.position, Quaternion.identity);
+                LineRenderer lr = tracer.GetComponent<LineRenderer>();
+                if (lr != null)
+                {
+                    lr.SetPosition(0, muzzlePoint.position);
+                    lr.SetPosition(1, hitInfo.point);
+                }
+                Destroy(tracer, tracerDuration);
             }
 
-            // Interacción con objetos
             if (hitInfo.collider.CompareTag("CAN"))
             {
-                Can canscript = hitInfo.collider.GetComponent<Can>();
-                if (canscript != null)
-                    canscript.OnHit(hitInfo.point);
+                if (hitEffectCan != null)
+                {
+                    ParticleSystem impact = Instantiate(
+                        hitEffectCan,
+                        hitInfo.point,
+                        Quaternion.LookRotation(hitInfo.normal)
+                    );
+                    impact.Play();
+                    Destroy(impact.gameObject, 2f);
+                }
+
+                Can canScript = hitInfo.collider.GetComponent<Can>();
+                if (canScript != null)
+                    canScript.OnHit(hitInfo.point);
             }
             else if (hitInfo.collider.CompareTag("EAGLE"))
             {
+                if (hitEffectEagle != null)
+                {
+                    ParticleSystem impact = Instantiate(
+                        hitEffectEagle,
+                        hitInfo.point,
+                        Quaternion.LookRotation(hitInfo.normal)
+                    );
+                    impact.Play();
+                    Destroy(impact.gameObject, 2f);
+                }
+
                 Eagle eagleScript = hitInfo.collider.GetComponent<Eagle>();
                 if (eagleScript != null)
                     eagleScript.OnHit(hitInfo.point);
             }
+            else if (hitInfo.collider.CompareTag("PHANTOMCAN"))
+            {
+                if (hitEffectCan != null)
+                {
+                    ParticleSystem impact = Instantiate(
+                        hitEffectCan,
+                        hitInfo.point,
+                        Quaternion.LookRotation(hitInfo.normal)
+                    );
+                    impact.Play();
+                    Destroy(impact.gameObject, 2f);
+                }
+
+                PhantomCan phantomCanScript = hitInfo.collider.GetComponent<PhantomCan>();
+                if (phantomCanScript != null)
+                    phantomCanScript.OnHit(hitInfo.point);
+            }
         }
+    }
+
+    private void ApplyRecoil()
+    {
+        transform.localRotation *= Quaternion.Euler(-recoilUp, 0f, 0f);
+        transform.localPosition += Vector3.back * recoilBack;
     }
 
     public void AddBullets(int amount)

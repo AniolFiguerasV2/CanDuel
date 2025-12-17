@@ -5,6 +5,7 @@ public class Lifes : MonoBehaviour
 {
     public int lifes = 3;
     private Points points;
+    private int maxLifes = 3;
 
     private void Start()
     {
@@ -18,7 +19,6 @@ public class Lifes : MonoBehaviour
         if (lifes < 0) lifes = 0;
 
         HUDController.instance.UpdateLifes(lifes);
-
         if (lifes <= 0)
         {
             PlayerPrefs.SetInt("LastScore", points.points);
@@ -28,5 +28,14 @@ public class Lifes : MonoBehaviour
             Time.timeScale = 0f;
             SceneManager.LoadScene("ScoreBoardScene");
         }
+    }
+
+    public void AddLife(int amount)
+    {
+        lifes += amount;
+
+        if (lifes > maxLifes) lifes = maxLifes;
+
+        HUDController.instance.UpdateLifes(lifes);
     }
 }
