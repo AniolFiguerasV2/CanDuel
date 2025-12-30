@@ -78,18 +78,20 @@ public class ShopManager : MonoBehaviour
     {
         CancelInvoke(nameof(DeactivateTemporaryWeapon));
 
-        currentTempWeapon.SetActive(false);
+        if (currentTempWeapon != null)
+            currentTempWeapon.SetActive(false);
 
         normalWeapon.SetActive(false);
         currentTempWeapon = weapon;
         currentTempWeapon.SetActive(true);
 
-        Invoke(nameof(DeactivateTemporaryWeapon), 15f);
+        Invoke(nameof(DeactivateTemporaryWeapon), 75f);
     }
 
     private void DeactivateTemporaryWeapon()
     {
-        currentTempWeapon.SetActive(false);
+        if (currentTempWeapon != null)
+            currentTempWeapon.SetActive(false);
 
         normalWeapon.SetActive(true);
         currentTempWeapon = null;

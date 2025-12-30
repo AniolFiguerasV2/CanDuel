@@ -30,14 +30,12 @@ public class Shoot : MonoBehaviour
     private void Awake()
     {
         inputAction = new PlayerInputs();
-
         currentBullets = maxBullets;
-
         originalLocalPosition = transform.localPosition;
         originalLocalRotation = transform.localRotation;
     }
 
-    private void Start()
+    private void OnEnable()
     {
         inputAction.Enable();
         inputAction.Player.shoot.performed += Shooting;
